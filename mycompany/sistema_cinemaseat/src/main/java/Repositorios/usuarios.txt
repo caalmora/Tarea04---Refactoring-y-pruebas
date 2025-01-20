@@ -1,0 +1,2 @@
+Cliente,mila1,Camila,camila1@gmail.com,1234
+Administrador,admin1,Juan,adminJuan@gmail.com,1234

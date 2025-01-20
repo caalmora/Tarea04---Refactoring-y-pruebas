@@ -1,0 +1,9 @@
+Moana,12:00-13/01/2025,Sala 1
+Moana,14:00-13/01/2025,Sala 1
+Moana,16:00-13/01/2025,Sala 1
+Interestelar,16:00-13/01/2025,Sala 2
+Interestelar,18:00-13/01/2025,Sala 2
+Interestelar,20:00-13/01/2025,Sala 2
+Bajo el Mismo Cielo,09:00-13/01/2025,Sala 3
+Bajo el Mismo Cielo,12:00-13/01/2025,Sala 3
+Bajo el Mismo Cielo,14:00-13/01/2025,Sala 3
