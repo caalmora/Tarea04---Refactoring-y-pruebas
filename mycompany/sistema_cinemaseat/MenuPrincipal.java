@@ -58,61 +58,37 @@ public class MenuPrincipal {
     }
 
     private void gestionarCliente() throws CinemaException {
-        System.out.print("Usuario: ");
-        String user = scanner.nextLine();
-        System.out.print("Clave: ");
-        int pass;
-        try {
-            pass = Integer.parseInt(scanner.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Clave debe ser numerica");
-            return;
+        Usuario clienteValido = autenticarCliente();
+        if (clienteValido != null) {
+            ((Cliente) clienteValido).manejarAcciones(scanner, gestorFunciones.obtenerFunciones(), usuarios, repositorioUsuarios);
         }
-        Usuario clienteValido = usuarios.stream()
-                .filter(u -> u.getUser().equals(user)
-                && u.getContrasena() == pass
-                && (u instanceof Cliente))
-                .findFirst().orElse(null);
-
-        if (clienteValido == null) {
-            System.out.println("Datos ingresados invalidos");
-            return;
-        }
-        ((Cliente) clienteValido).manejarAcciones(
-                scanner,
-                gestorFunciones.obtenerFunciones(),
-                usuarios,
-                repositorioUsuarios
-        );
     }
 
-    private void gestionarAdministrador() throws CinemaException {
+    private Usuario autenticarCliente() {
         System.out.print("Usuario: ");
         String user = scanner.nextLine();
         System.out.print("Clave: ");
-        int pass;
-        try {
-            pass = Integer.parseInt(scanner.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Clave debe ser numerica");
-            return;
-        }
-        Usuario adminValido = usuarios.stream()
-                .filter(u -> u.getUser().equals(user)
-                && u.getContrasena() == pass
-                && (u instanceof Administrador))
+        int pass = Integer.parseInt(scanner.nextLine());
+        return usuarios.stream()
+                .filter(u -> u.getUser().equals(user) && u.getContrasena() == pass && (u instanceof Cliente))
                 .findFirst().orElse(null);
-
-        if (adminValido == null) {
-            System.out.println("Datos invalidos");
-            return;
+    }
+    
+    private void gestionarAdministrador() throws CinemaException {
+        Usuario adminValido = autenticarAdministrador();
+        if (adminValido != null) {
+            ((Cliente) adminValido).manejarAcciones(scanner, gestorFunciones.obtenerFunciones(), usuarios, repositorioUsuarios);
         }
-        ((Administrador) adminValido).manejarAcciones(
-                scanner,
-                gestorFunciones,
-                usuarios,
-                repositorioUsuarios
-        );
+    }
+    
+    private Usuario autenticarAdministrador() {
+        System.out.print("Usuario: ");
+        String user = scanner.nextLine();
+        System.out.print("Clave: ");
+        int pass = Integer.parseInt(scanner.nextLine());
+        return usuarios.stream()
+                .filter(u -> u.getUser().equals(user) && u.getContrasena() == pass && (u instanceof Administrador))
+                .findFirst().orElse(null);
     }
 
     private void crearUsuario() {
