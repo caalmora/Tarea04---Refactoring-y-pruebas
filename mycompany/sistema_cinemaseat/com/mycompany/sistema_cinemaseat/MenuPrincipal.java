@@ -11,15 +11,15 @@ import java.util.Scanner;
 public class MenuPrincipal {
 
     private Scanner scanner;
-    private IPersistenciaUsuarios repositorioUsuarios;
+    private IPersistenciaUsuarios repoUsuarios;
     private IGestorFunciones gestorFunciones;
     private INotificador notificador;
     private List<Usuario> usuarios;
 
-    public MenuPrincipal(Scanner scanner, IPersistenciaUsuarios repositorioUsuarios,
-            IGestorFunciones gestorFunciones, INotificador notificador, List<Usuario> usuarios) {
+    public MenuPrincipal(Scanner scanner, IPersistenciaUsuarios repoUsuarios, IGestorFunciones gestorFunciones,
+            INotificador notificador, List<Usuario> usuarios) {
         this.scanner = scanner;
-        this.repositorioUsuarios = repositorioUsuarios;
+        this.repoUsuarios = repoUsuarios;
         this.gestorFunciones = gestorFunciones;
         this.notificador = notificador;
         this.usuarios = usuarios;
@@ -44,7 +44,7 @@ public class MenuPrincipal {
                     case 3 ->
                         crearUsuario();
                     case 4 -> {
-                        repositorioUsuarios.guardarUsuarios(usuarios);
+                        repoUsuarios.guardarUsuarios(usuarios);
                         sistemaActivo = false;
                         System.out.println("\nGracias por usar CinemaSeat...");
                     }
@@ -58,42 +58,40 @@ public class MenuPrincipal {
     }
 
     private void gestionarCliente() throws CinemaException {
-        Usuario clienteValido = autenticarCliente();
-        if (clienteValido != null) {
-            ((Cliente) clienteValido).manejarAcciones(scanner, gestorFunciones.obtenerFunciones(), usuarios, repositorioUsuarios);
+        Usuario clienteValido = autenticarUsuario(Cliente.class);
+        if (clienteValido == null) {
+            System.out.println("\nDatos ingresados inválidos");
+            return;
         }
+        ((Cliente) clienteValido).manejarAcciones(this.getContexto());
     }
 
-    private Usuario autenticarCliente() {
-        System.out.print("Usuario: ");
-        String user = scanner.nextLine();
-        System.out.print("Clave: ");
-        int pass = Integer.parseInt(scanner.nextLine());
-        return usuarios.stream()
-                .filter(u -> u.getUser().equals(user) && u.getContrasena() == pass && (u instanceof Cliente))
-                .findFirst().orElse(null);
-    }
-    
     private void gestionarAdministrador() throws CinemaException {
-        Usuario adminValido = autenticarAdministrador();
-        if (adminValido != null) {
-            ((Cliente) adminValido).manejarAcciones(scanner, gestorFunciones.obtenerFunciones(), usuarios, repositorioUsuarios);
+        Usuario adminValido = autenticarUsuario(Administrador.class);
+        if (adminValido == null) {
+            System.out.println("\nDatos ingresados inválidos");
+            return;
         }
+        ((Administrador) adminValido).manejarAcciones(this.getContexto());
     }
-    
-    private Usuario autenticarAdministrador() {
-        System.out.print("Usuario: ");
+
+    private Usuario autenticarUsuario(Class<?> tipoUsuario) {
+        System.out.print("\nUsuario: ");
         String user = scanner.nextLine();
         System.out.print("Clave: ");
-        int pass = Integer.parseInt(scanner.nextLine());
+        String clave = scanner.nextLine();
+
         return usuarios.stream()
-                .filter(u -> u.getUser().equals(user) && u.getContrasena() == pass && (u instanceof Administrador))
-                .findFirst().orElse(null);
+                .filter(u -> u.getUser().equals(user)
+                        && u.getContrasena().validar(clave)
+                        && tipoUsuario.isInstance(u))
+                .findFirst()
+                .orElse(null);
     }
 
     private void crearUsuario() {
         System.out.println("[NOTA] Administrador su correo debe contener 'admin'");
-        System.out.println("Tipos de Usuarios");
+        System.out.println("\nTipos de Usuarios\n");
         System.out.println("1 ---> Cliente\n2 ---> Administrador\n");
         System.out.print("Ingrese una opcion numerica (Ej:1): ");
         try {
@@ -104,27 +102,20 @@ public class MenuPrincipal {
             String correo = scanner.nextLine();
             System.out.print("Usuario: ");
             String user = scanner.nextLine();
-            System.out.print("Clave (solo numeros): ");
-            int contrasena = Integer.parseInt(scanner.nextLine());
-            Usuario nuevoUsuario = (tipo == 1)
-                    ? new Cliente(user, nombre, correo, contrasena)
-                    : new Administrador(user, nombre, correo, contrasena);
+            System.out.print("Clave: ");
+            String clave = scanner.nextLine();
+            Usuario nuevoUsuario = (tipo == 1) ? new Cliente(user, nombre, correo, clave)
+                    : new Administrador(user, nombre, correo, clave);
             usuarios.add(nuevoUsuario);
-            repositorioUsuarios.guardarUsuarios(usuarios);
-            if (nuevoUsuario instanceof Cliente) {
-                com.mycompany.sistema_cinemaseat.ArchivoCorreo.escribirCliente(
-                        correo,
-                        "Bienvenido/a " + nombre + ", su usuario ha sido creado."
-                );
-            } else {
-                com.mycompany.sistema_cinemaseat.ArchivoCorreo.escribirAdministrador(
-                        correo,
-                        "Bienvenido/a " + nombre + ", su usuario ha sido creado."
-                );
-            }
-            System.out.println("Usuario creado con exito");
+            repoUsuarios.guardarUsuarios(usuarios);
+            ArchivoCorreo.escribirNotificacion(correo, "Bienvenido/a " + nombre + ", su usuario ha sido creado.");
+            System.out.println("\nUsuario creado con exito\n");
         } catch (NumberFormatException e) {
-            System.out.println("Entrada invalida");
+            System.out.println("\nEntrada invalida\n");
         }
+    }
+
+    private ContextoAccion getContexto() {
+        return new ContextoAccion(scanner, gestorFunciones, usuarios, repoUsuarios);
     }
 }
