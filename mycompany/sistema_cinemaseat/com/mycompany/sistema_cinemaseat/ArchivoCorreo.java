@@ -30,8 +30,7 @@ public class ArchivoCorreo {
             writer.write(mensaje);
             writer.newLine();
         } catch (IOException e) {
-            System.err.println("\nError al escribir en el archivo de correo 'Cliente': " + e.getMessage());
-            System.out.println();
+            System.err.println("Error al escribir en el archivo de correo Cliente: " + e.getMessage());
         }
     }
 
@@ -42,15 +41,21 @@ public class ArchivoCorreo {
             writer.write(mensaje);
             writer.newLine();
         } catch (IOException e) {
-            System.err.println("\nError al escribir en el archivo de correo 'Administrador': " + e.getMessage());
-            System.out.println();
+            System.err.println("Error al escribir en el archivo de correo Administrador: " + e.getMessage());
+        }
+    }
+
+    public static void escribirNotificacion(String correo, String mensaje) {
+        if (correo.toLowerCase().contains("admin")) {
+            escribirAdministrador(correo, mensaje);
+        } else {
+            escribirCliente(correo, mensaje);
         }
     }
 
     public static void notificarAClientes(List<Cliente> clientes, String mensaje) {
         for (Cliente cliente : clientes) {
-            escribirCliente(cliente.getCorreo(), mensaje);
+            escribirCliente(cliente.getCorreo().getDireccion(), mensaje);
         }
     }
 }
-

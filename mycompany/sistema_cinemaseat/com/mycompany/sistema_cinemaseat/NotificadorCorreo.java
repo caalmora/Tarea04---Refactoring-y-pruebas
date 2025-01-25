@@ -12,14 +12,10 @@ import java.util.List;
  */
 
 public class NotificadorCorreo implements INotificador {
-
+    
     @Override
     public void enviarNotificacion(String correoDestino, String mensaje) {
-        if (correoDestino.toLowerCase().contains("admin")) {
-            ArchivoCorreo.escribirAdministrador(correoDestino, mensaje);
-        } else {
-            ArchivoCorreo.escribirCliente(correoDestino, mensaje);
-        }
+        ArchivoCorreo.escribirNotificacion(correoDestino, mensaje);
     }
 
     public void notificar(List<Cliente> clientes, String mensaje) {
