@@ -14,10 +14,10 @@ public class Usuario {
 
     private String user;       // Ej: "carlosp"
     private String nombre;     // Ej: "Carlos Pérez"
-    private String correo;     // Ej: "carlos@gmail.com"
-    private int contrasena;    // Ej: 1234
+    private Correo correo;     // Ej: "carlos@gmail.com"
+    private Contrasena contrasena;    // Ej: 1234
 
-    public Usuario(String user, String nombre, String correo, int contrasena) {
+    public Usuario(String user, String nombre, Correo correo, Contrasena contrasena) {
         this.user = user;
         this.nombre = nombre;
         this.correo = correo;
@@ -32,19 +32,19 @@ public class Usuario {
         return nombre;
     }
 
-    public String getCorreo() {
+    public Correo getCorreo() {
         return correo;
     }
 
-    public void setCorreo(String correo) {
+    public void setCorreo(Correo correo) {
         this.correo = correo;
     }
 
-    public int getContrasena() {
+    public Contrasena getContrasena() {
         return contrasena;
     }
 
-    public void setContrasena(int contrasena) {
+    public void setContrasena(Contrasena contrasena) {
         this.contrasena = contrasena;
     }
 }

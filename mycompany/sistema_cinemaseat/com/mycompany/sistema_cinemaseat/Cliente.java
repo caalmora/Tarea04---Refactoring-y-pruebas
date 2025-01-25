@@ -26,7 +26,7 @@ public class Cliente extends Usuario {
     private double totalPendiente;
     private List<Reserva> asientosPendientes;
 
-    public Cliente(String user, String nombre, String correo, int contrasena) {
+    public Cliente(String user, String nombre, Correo correo, Contrasena contrasena) {
         super(user, nombre, correo, contrasena);
         this.reservas = new ArrayList<>();
         this.compraPendiente = false;
