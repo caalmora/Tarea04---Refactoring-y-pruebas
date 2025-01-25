@@ -4,7 +4,6 @@ package com.mycompany.sistema_cinemaseat;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -114,10 +113,7 @@ public class Cliente extends Usuario {
     private void liberarAsientosPendientes() {
         if (funcionPendiente != null && horarioPendiente != null) {
             try {
-                Sala sala = funcionPendiente.obtenerSala(horarioPendiente);
-                for (Reserva r : asientosPendientes) {
-                    sala.liberarAsiento(r.getFila() - 1, r.getColumna() - 1);
-                }
+                funcionPendiente.liberarAsientos(horarioPendiente, asientosPendientes);
             } catch (CinemaException e) {
                 System.out.println("\nError al liberar asientos: " + e.getMessage());
             }

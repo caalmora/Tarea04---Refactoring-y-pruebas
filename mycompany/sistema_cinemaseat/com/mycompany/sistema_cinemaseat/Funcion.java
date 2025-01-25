@@ -16,10 +16,10 @@ import java.util.Map;
  * @author User
  */
 
-public class Funcion {
+ public class Funcion {
 
     private String pelicula;
-    private Map<String, Sala> horarios; // clave: "18:00-12/05/2025" -> Sala
+    private Map<String, Sala> horarios;   // Clave : "18:00-12/005/2025 -> Sala
 
     public Funcion(String pelicula) {
         this.pelicula = pelicula;
@@ -53,10 +53,14 @@ public class Funcion {
         } else {
             List<String> listaHorarios = new ArrayList<>(horarios.keySet());
             Collections.sort(listaHorarios);
-            for (String h : listaHorarios) {
-                System.out.println(h);
-            }
+            listaHorarios.forEach(h -> System.out.println(h));
+        }
+    }
+
+    public void liberarAsientos(String horario, List<Reserva> reservas) throws CinemaException {
+        Sala sala = obtenerSala(horario);
+        for (Reserva r : reservas) {
+            sala.liberarAsiento(r.getFila() - 1, r.getColumna() - 1);
         }
     }
 }
-
