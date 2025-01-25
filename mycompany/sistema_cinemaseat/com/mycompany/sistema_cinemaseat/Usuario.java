@@ -10,7 +10,7 @@ package com.mycompany.sistema_cinemaseat;
  * @author User
  */
 
-public class Usuario {
+public abstract class Usuario {
     private String user; // Ej: "carlosp"
     private String nombre; // Ej: "Carlos Pérez"
     private Correo correo; // Ej: "carlos@gmail.com"
@@ -46,5 +46,7 @@ public class Usuario {
     public void setContrasena(String contrasena) {
         this.contrasena = new Contrasena(contrasena);
     }
+
+    public abstract void manejarAcciones(ContextoAccion contexto) throws CinemaException;
 
 }
