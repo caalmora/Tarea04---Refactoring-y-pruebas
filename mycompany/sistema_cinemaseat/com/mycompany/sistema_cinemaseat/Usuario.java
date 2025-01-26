@@ -11,10 +11,10 @@ package com.mycompany.sistema_cinemaseat;
  */
 
 public abstract class Usuario {
-    private String user; // Ej: "carlosp"
-    private String nombre; // Ej: "Carlos Pérez"
-    private Correo correo; // Ej: "carlos@gmail.com"
-    private Contrasena contrasena; // Ej: 1234
+    private String user; 
+    private String nombre; 
+    private Correo correo; 
+    private Contrasena contrasena; 
 
     public Usuario(String user, String nombre, String correo, String contrasena) {
         this.user = user;

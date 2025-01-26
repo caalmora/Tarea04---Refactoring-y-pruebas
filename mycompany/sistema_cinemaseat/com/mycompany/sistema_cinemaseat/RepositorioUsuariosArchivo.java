@@ -12,6 +12,7 @@ import java.util.List;
  *
  * @author User
  */
+
 public class RepositorioUsuariosArchivo implements IPersistenciaUsuarios {
 
     private static final String USUARIOS_FILE = "src/main/java/Repositorios/usuarios.txt";
@@ -24,13 +25,13 @@ public class RepositorioUsuariosArchivo implements IPersistenciaUsuarios {
             while ((linea = reader.readLine()) != null) {
                 String[] partes = linea.split(",");
                 if (partes[0].equals("Cliente")) {
-                    usuarios.add(new Cliente(partes[1], partes[2], partes[3], Integer.parseInt(partes[4])));
+                    usuarios.add(new Cliente(partes[1], partes[2], partes[3], partes[4]));
                 } else {
-                    usuarios.add(new Administrador(partes[1], partes[2], partes[3], Integer.parseInt(partes[4])));
+                    usuarios.add(new Administrador(partes[1], partes[2], partes[3], partes[4]));
                 }
             }
         } catch (IOException e) {
-            System.out.println("\nNo se encontraron usuarios persistidos\n");
+            System.out.println("No se encontraron usuarios persistidos");
         }
         return usuarios;
     }
@@ -41,12 +42,11 @@ public class RepositorioUsuariosArchivo implements IPersistenciaUsuarios {
             for (Usuario usuario : usuarios) {
                 String tipo = (usuario instanceof Cliente) ? "Cliente" : "Administrador";
                 writer.write(tipo + "," + usuario.getUser() + "," + usuario.getNombre() + ","
-                        + usuario.getCorreo() + "," + usuario.getContrasena());
+                        + usuario.getCorreo() + "," + usuario.getContrasena().generarHash(usuario.getContrasena().toString()));
                 writer.newLine();
             }
         } catch (IOException e) {
-            System.err.println("\nError al guardar usuarios: " + e.getMessage());
-            System.out.println();
+            System.err.println("Error al guardar usuarios: " + e.getMessage());
         }
     }
 }

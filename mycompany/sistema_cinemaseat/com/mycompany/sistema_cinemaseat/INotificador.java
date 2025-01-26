@@ -11,6 +11,6 @@ package com.mycompany.sistema_cinemaseat;
 
 public interface INotificador {
 
-    void enviarNotificacion(String correoDestino, String mensaje);
+    public void enviarNotificacion(String correoDestino, String mensaje);
 }
 

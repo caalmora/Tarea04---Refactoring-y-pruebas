@@ -11,7 +11,7 @@ import java.util.List;
  * @author User
  */
 
-public class ArchivoCorreo {
+ public class ArchivoCorreo {
 
     private static final String RUTA_CLIENTES = "src/main/java/Correos/Clientes/";
     private static final String RUTA_ADMINISTRADORES = "src/main/java/Correos/Administradores/";
@@ -59,3 +59,4 @@ public class ArchivoCorreo {
         }
     }
 }
+

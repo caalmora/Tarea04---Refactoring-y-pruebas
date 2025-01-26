@@ -19,7 +19,7 @@ import java.util.Map;
  public class Funcion {
 
     private String pelicula;
-    private Map<String, Sala> horarios;   // Clave : "18:00-12/005/2025 -> Sala
+    private Map<String, Sala> horarios;   
 
     public Funcion(String pelicula) {
         this.pelicula = pelicula;

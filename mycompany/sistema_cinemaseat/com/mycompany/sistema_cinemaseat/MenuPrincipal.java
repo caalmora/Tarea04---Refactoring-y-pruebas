@@ -8,7 +8,7 @@ import java.util.Scanner;
  * @author User
  */
 
-public class MenuPrincipal {
+ public class MenuPrincipal {
 
     private Scanner scanner;
     private IPersistenciaUsuarios repoUsuarios;
@@ -16,8 +16,7 @@ public class MenuPrincipal {
     private INotificador notificador;
     private List<Usuario> usuarios;
 
-    public MenuPrincipal(Scanner scanner, IPersistenciaUsuarios repoUsuarios, IGestorFunciones gestorFunciones,
-            INotificador notificador, List<Usuario> usuarios) {
+    public MenuPrincipal(Scanner scanner, IPersistenciaUsuarios repoUsuarios, IGestorFunciones gestorFunciones, INotificador notificador, List<Usuario> usuarios) {
         this.scanner = scanner;
         this.repoUsuarios = repoUsuarios;
         this.gestorFunciones = gestorFunciones;
@@ -83,8 +82,8 @@ public class MenuPrincipal {
 
         return usuarios.stream()
                 .filter(u -> u.getUser().equals(user)
-                        && u.getContrasena().validar(clave)
-                        && tipoUsuario.isInstance(u))
+                && u.getContrasena().validar(clave)
+                && tipoUsuario.isInstance(u))
                 .findFirst()
                 .orElse(null);
     }
@@ -104,8 +103,7 @@ public class MenuPrincipal {
             String user = scanner.nextLine();
             System.out.print("Clave: ");
             String clave = scanner.nextLine();
-            Usuario nuevoUsuario = (tipo == 1) ? new Cliente(user, nombre, correo, clave)
-                    : new Administrador(user, nombre, correo, clave);
+            Usuario nuevoUsuario = (tipo == 1) ? new Cliente(user, nombre, correo, clave) : new Administrador(user, nombre, correo, clave);
             usuarios.add(nuevoUsuario);
             repoUsuarios.guardarUsuarios(usuarios);
             ArchivoCorreo.escribirNotificacion(correo, "Bienvenido/a " + nombre + ", su usuario ha sido creado.");

@@ -14,7 +14,7 @@ import java.util.Scanner;
  * @author User
  */
 
-public class Administrador extends Usuario {
+ public class Administrador extends Usuario {
 
     public Administrador(String user, String nombre, String correo, String contrasena) {
         super(user, nombre, correo, contrasena);
@@ -97,8 +97,8 @@ public class Administrador extends Usuario {
                 if (num >= 1 && num <= funciones.size()) {
                     Funcion funcionEliminada = funciones.remove(num - 1);
                     ArchivoCorreo.notificarAClientes(new ArrayList<>(),
-                            "La función " + funcionEliminada.getPelicula() + " ha sido cancelada por el administrador "
-                                    + getNombre());
+                            "La función " + funcionEliminada.getPelicula() + " ha sido cancelada por el administrador " + getNombre()
+                    );
                     System.out.println("\nFuncion eliminada y clientes notificados");
                 } else {
                     System.out.println("\nNumero invalido");
@@ -133,8 +133,8 @@ public class Administrador extends Usuario {
                 Sala salaEliminada = RepositorioSalasArchivo.eliminarSala(nombreSala);
                 if (salaEliminada != null) {
                     ArchivoCorreo.notificarAClientes(new ArrayList<>(),
-                            "La sala " + nombreSala
-                                    + " se encuentra en reparaciones. Se ha reasignado a los clientes afectados.");
+                            "La sala " + nombreSala + " se encuentra en reparaciones. Se ha reasignado a los clientes afectados."
+                    );
                     System.out.println("\nSala eliminada y clientes notificados\n");
                 } else {
                     System.out.println("\nSala no encontrada\n");
@@ -199,8 +199,7 @@ public class Administrador extends Usuario {
                 contexto.getUsuarios().remove(userAEliminar);
                 contexto.getRepoUsuarios().guardarUsuarios(contexto.getUsuarios());
                 Reporte reporte = new Reporte();
-                reporte.notificarAdministradores(contexto.getUsuarios(),
-                        "Se ha eliminado al usuario " + userAEliminar.getUser());
+                reporte.notificarAdministradores(contexto.getUsuarios(), "Se ha eliminado al usuario " + userAEliminar.getUser());
                 System.out.println("\nUsuario eliminado con exito\n");
             }
         } catch (NumberFormatException e) {

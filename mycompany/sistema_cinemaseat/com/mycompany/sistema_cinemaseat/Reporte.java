@@ -15,7 +15,7 @@ import java.util.Random;
  * @author User
  */
 
-public class Reporte {
+ public class Reporte {
 
     private static final String REPORTE_FILE = "src/main/java/Repositorios/reportes.txt";
 
@@ -24,29 +24,22 @@ public class Reporte {
         try (BufferedWriter escritor = new BufferedWriter(new FileWriter(REPORTE_FILE, true))) {
             escritor.write(reporte);
             escritor.newLine();
-            System.out.println("\nReporte registrado: " + reporte + "\n");
+            System.out.println("Reporte registrado: " + reporte);
         } catch (IOException e) {
-            System.err.println("\nError al registrar el reporte: " + e.getMessage() + "\n");
+            System.err.println("Error al registrar el reporte: " + e.getMessage());
         }
     }
 
     public void notificarAdministradores(List<Usuario> usuarios, String mensaje) {
-        List<Usuario> admins = usuarios.stream()
-                .filter(u -> u instanceof Administrador)
-                .toList();
-
+        List<Usuario> admins = usuarios.stream().filter(u -> u instanceof Administrador).toList();
         if (admins.isEmpty()) {
-            System.out.println("\nNo hay administradores para notificar\n");
+            System.out.println("No hay administradores para notificar");
             return;
         }
-
         Random rand = new Random();
         int index = rand.nextInt(admins.size());
         Usuario adminAleatorio = admins.get(index);
-        ArchivoCorreo.escribirAdministrador(
-                adminAleatorio.getCorreo(),
-                "[REPORTE AUTOMÁTICO] " + mensaje
-        );
-        System.out.println("\nReporte enviado a " + adminAleatorio.getNombre() + "\n");
+        ArchivoCorreo.escribirAdministrador(adminAleatorio.getCorreo().getDireccion(), "[REPORTE AUTOMÁTICO] " + mensaje);
+        System.out.println("Reporte enviado a " + adminAleatorio.getNombre());
     }
 }

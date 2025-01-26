@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface IGestorFunciones {
 
-    void agregarFuncion(Funcion funcion);
+    public void agregarFuncion(Funcion funcion);
 
-    List<Funcion> obtenerFunciones();
+    public List<Funcion> obtenerFunciones();
 }

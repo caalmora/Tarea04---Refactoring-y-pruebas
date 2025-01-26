@@ -11,8 +11,8 @@ import java.util.List;
 
 public interface IPersistenciaFunciones {
 
-    List<Funcion> cargarFunciones();
+    public List<Funcion> cargarFunciones();
 
-    void guardarFunciones(List<Funcion> funciones);
+    public void guardarFunciones(List<Funcion> funciones);
 }
 

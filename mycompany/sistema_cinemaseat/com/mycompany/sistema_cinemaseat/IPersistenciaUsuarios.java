@@ -11,8 +11,8 @@ import java.util.List;
 
 public interface IPersistenciaUsuarios {
 
-    List<Usuario> cargarUsuarios();
+    public List<Usuario> cargarUsuarios();
 
-    void guardarUsuarios(List<Usuario> usuarios);
+    public void guardarUsuarios(List<Usuario> usuarios);
 }
 
