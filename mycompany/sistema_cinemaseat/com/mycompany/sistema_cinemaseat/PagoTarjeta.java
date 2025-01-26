@@ -44,5 +44,9 @@ public class PagoTarjeta extends MetodoPago {
         }
         return false;
     }
-}
 
+    @Override
+    public String getDescripcion() {
+        return "Pago con Tarjeta";
+    }
+}

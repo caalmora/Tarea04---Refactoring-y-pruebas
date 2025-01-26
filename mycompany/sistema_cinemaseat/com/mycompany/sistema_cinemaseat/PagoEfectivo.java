@@ -42,4 +42,9 @@ public class PagoEfectivo extends MetodoPago {
         }
         return false;
     }
+
+    @Override
+    public String getDescripcion() {
+        return "Pago en Efectivo";
+    }
 }

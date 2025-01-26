@@ -14,5 +14,7 @@ import java.util.Scanner;
 public abstract class MetodoPago {
 
     public abstract boolean procesarPago(double cantidad, Scanner scanner) throws CinemaException;
-}
 
+    public abstract String getDescripcion();
+
+}

@@ -218,15 +218,16 @@ public class Cliente extends Usuario {
         System.out.print("Seleccione un metodo (Ej:1): ");
         try {
             int metodo = Integer.parseInt(scanner.nextLine());
+            MetodoPago metodoPago;
             switch (metodo) {
-                case 1:
-                    return mostrarMenuPago(scanner, total, esReanudacion, new PagoEfectivo());
-                case 2:
-                    return mostrarMenuPago(scanner, total, esReanudacion, new PagoTarjeta());
-                default:
+                case 1 -> metodoPago = new PagoEfectivo();
+                case 2 -> metodoPago = new PagoTarjeta();
+                default -> {
                     System.out.println("\nMetodo invalido\n");
                     return false;
+                }
             }
+            return mostrarMenuPago(scanner, total, esReanudacion, metodoPago);
         } catch (NumberFormatException e) {
             System.out.println("\nEntrada invalida\n");
             return false;
@@ -235,13 +236,11 @@ public class Cliente extends Usuario {
 
     private boolean mostrarMenuPago(Scanner scanner, double total, boolean esReanudacion, MetodoPago metodoPago)
             throws CinemaException {
-        if (metodoPago instanceof PagoEfectivo) {
-            System.out.println("\n--- Pago en Efectivo ---\n");
-        } else {
-            System.out.println("\n--- Pago con Tarjeta ---\n");
-        }
+        System.out.println("\n--- " + metodoPago.getDescripcion() + " ---\n");
+
         ProcesoPago procesoPago = new ProcesoPago(metodoPago);
         procesoPago.iniciarProcesoPago(total, scanner);
+
         if (procesoPago.isPagoExitoso() && !procesoPago.isTiempoAgotado()) {
             return true;
         } else if (procesoPago.isTiempoAgotado()) {
