@@ -236,7 +236,8 @@ public class Cliente extends Usuario {
 
     private boolean mostrarMenuPago(Scanner scanner, double total, boolean esReanudacion, MetodoPago metodoPago)
             throws CinemaException {
-        System.out.println("\n--- " + metodoPago.getDescripcion() + " ---\n");
+
+        System.out.println("\n---- " + metodoPago.getDescripcion() + " ----\n");
 
         ProcesoPago procesoPago = new ProcesoPago(metodoPago);
         procesoPago.iniciarProcesoPago(total, scanner);

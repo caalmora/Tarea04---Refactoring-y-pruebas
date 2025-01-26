@@ -19,6 +19,7 @@ public class ProcesoPago {
     private CuentaRegresivaGUI gui;
     private AtomicBoolean pagoExitoso;
     private boolean tiempoAgotado;
+    private static final int TIEMPO_CUENTA_REGRESIVA = 15;
 
     public ProcesoPago(MetodoPago metodoPago) {
         this.metodoPago = metodoPago;
@@ -37,7 +38,7 @@ public class ProcesoPago {
     public void iniciarProcesoPago(double cantidad, Scanner scanner) throws CinemaException {
         gui = new CuentaRegresivaGUI();
         Thread cuentaThread = new Thread(() -> {
-            int segundos = 15;
+            int segundos = TIEMPO_CUENTA_REGRESIVA;
             while (segundos > 0 && !pagoExitoso.get()) {
                 gui.actualizarTiempo(segundos);
                 try {
