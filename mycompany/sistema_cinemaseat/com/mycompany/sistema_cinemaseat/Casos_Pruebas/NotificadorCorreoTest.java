@@ -54,5 +54,41 @@ class NotificadorCorreoTest {
             notificadorCorreo.notificar(null, "Mensaje con lista nula");
         });
     }
+    
+    // Prueba de error para enviarNotificacion con mensaje nulo
+    @Test
+    void testEnviarNotificacionMensajeNulo() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            notificadorCorreo.enviarNotificacion("test@correo.com", null);
+        });
+    }
+
+    // Prueba de error para notificar con mensaje nulo
+    @Test
+    void testNotificarMensajeNulo() {
+        List<Cliente> clientes = Arrays.asList(new Cliente("Juan"), new Cliente("Maria"));
+        
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            notificadorCorreo.notificar(clientes, null);
+        });
+    }
+
+    // Prueba de error para enviarNotificacion con correo destino vacío
+    @Test
+    void testEnviarNotificacionCorreoVacio() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            notificadorCorreo.enviarNotificacion("", "Mensaje con correo vacío");
+        });
+    }
+
+    // Prueba de error para notificar con lista de clientes vacía
+    @Test
+    void testNotificarListaVacia() {
+        List<Cliente> clientesVacios = Arrays.asList();
+        
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            notificadorCorreo.notificar(clientesVacios, "Mensaje con lista vacía");
+        });
+    }
 }
 
