@@ -8,27 +8,40 @@ class SalaTest {
 
     @BeforeEach
     void setUp() {
-        sala = new Sala(4, 120);
+        sala = new Sala("Sala 1", 5, 5);
+        sala.inicializarAsientos(10.0, 15.0, 20.0);
     }
 
     @Test
-    void testObtenerCapacidadNormal() {
-        assertEquals(120, sala.getCapacidad());
+    void testSeleccionarAsientoExitoso() throws CinemaException {
+        double precio = sala.seleccionarAsiento(0, 0);
+        assertEquals(20.0, precio);
+        assertEquals(EstadoAsiento.EN_PROCESO_COMPRA, sala.getAsientos()[0][0].getEstado());
     }
 
     @Test
-    void testObtenerCapacidadNormal2() {
-        assertTrue(sala.getCapacidad() > 0);
+    void testSeleccionarAsientoYaOcupado() throws CinemaException {
+        sala.seleccionarAsiento(0, 0);
+        CinemaException exception = assertThrows(CinemaException.class, () -> sala.seleccionarAsiento(0, 0));
+        assertEquals("\nEl asiento ya esta ocupado o en proceso de compra\n", exception.getMessage());
     }
 
     @Test
-    void testObtenerCapacidadError() {
-        assertNotEquals(100, sala.getCapacidad());
+    void testSeleccionarAsientoCoordenadasInvalidas() {
+        CinemaException exception = assertThrows(CinemaException.class, () -> sala.seleccionarAsiento(10, 10));
+        assertEquals("\nCoordenadas invalidas para el asiento\n", exception.getMessage());
     }
 
     @Test
-    void testObtenerCapacidadError2() {
-        sala = new Sala(5, -20);
-        assertThrows(IllegalArgumentException.class, () -> sala.getCapacidad());
+    void testLiberarAsientoExitoso() throws CinemaException {
+        sala.seleccionarAsiento(1, 1);
+        sala.liberarAsiento(1, 1);
+        assertEquals(EstadoAsiento.DISPONIBLE, sala.getAsientos()[1][1].getEstado());
+    }
+
+    @Test
+    void testLiberarAsientoCoordenadasInvalidas() {
+        CinemaException exception = assertThrows(CinemaException.class, () -> sala.liberarAsiento(10, 10));
+        assertEquals("\nCoordenadas invalidas para el asiento\n", exception.getMessage());
     }
 }
