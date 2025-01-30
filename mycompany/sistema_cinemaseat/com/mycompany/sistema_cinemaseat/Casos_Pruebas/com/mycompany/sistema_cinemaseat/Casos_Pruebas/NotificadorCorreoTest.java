@@ -1,4 +1,4 @@
-import com.mycompany.sistema_cinemaseat.*
+package com.mycompany.sistema_cinemaseat.Casos_Pruebas;
 import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

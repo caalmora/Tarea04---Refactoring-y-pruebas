@@ -1,4 +1,4 @@
-package com.mycompany.sistema_cinemaseat;
+package com.mycompany.sistema_cinemaseat.Casos_Pruebas;
 import com.mycompany.sistema_cinemaseat.Contrasena;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;

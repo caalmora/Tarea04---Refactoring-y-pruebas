@@ -1,3 +1,5 @@
+package com.mycompany.sistema_cinemaseat.Casos_Pruebas;
+
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
@@ -7,7 +9,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.stream.Stream;
-import com.mycompany.sistema_cinemaseat.*
 
 
 @ExtendWith(MockitoExtension.class) //se usa esta libreria para simular objetos y no estar instanciando

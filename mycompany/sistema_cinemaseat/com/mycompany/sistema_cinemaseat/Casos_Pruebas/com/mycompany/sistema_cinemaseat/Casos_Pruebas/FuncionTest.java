@@ -1,7 +1,8 @@
+package com.mycompany.sistema_cinemaseat.Casos_Pruebas;
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import com.mycompany.sistema_cinemaseat.*
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,7 +10,7 @@ import java.util.*;
 
 class FuncionTest {
 
- @Test
+    @Test
     void testAgregarHorarioNormal() {
         Funcion funcion = new Funcion("Inception");
         Sala sala = new Sala(10, 10);

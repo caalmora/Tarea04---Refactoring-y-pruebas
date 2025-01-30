@@ -1,7 +1,8 @@
+package com.mycompany.sistema_cinemaseat.Casos_Pruebas;
+
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import com.mycompany.sistema_cinemaseat.*
 
 class CineTest {
     private Cine cine;
