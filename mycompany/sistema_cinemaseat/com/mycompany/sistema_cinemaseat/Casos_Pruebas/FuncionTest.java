@@ -5,30 +5,53 @@ import com.mycompany.sistema_cinemaseat.*
 
 class FuncionTest {
     private Funcion funcion;
+    private Sala sala;
 
     @BeforeEach
     void setUp() {
-        funcion = new Funcion("Pelicula", "20:00", new Sala(1, 100));
+        funcion = new Funcion("Matrix");
+        sala = new Sala(5, 5);
     }
 
     @Test
-    void testObtenerHorarioNormal() {
-        assertEquals("20:00", funcion.getHorario());
+    void testAgregarHorario() {
+        funcion.agregarHorario("18:00", sala);
+        Map<String, Sala> horarios = funcion.getHorarios();
+        assertTrue(horarios.containsKey("18:00"));
+        assertEquals(sala, horarios.get("18:00"));
     }
 
     @Test
-    void testObtenerHorarioNormal2() {
-        assertTrue(funcion.getHorario().matches("\\d{2}:\\d{2}"));
+    void testObtenerSalaValida() throws CinemaException {
+        funcion.agregarHorario("18:00", sala);
+        Sala obtenida = funcion.obtenerSala("18:00");
+        assertEquals(sala, obtenida);
     }
 
     @Test
-    void testObtenerHorarioError() {
-        assertNotEquals("22:00", funcion.getHorario());
+    void testObtenerSalaInvalida() {
+        CinemaException exception = assertThrows(CinemaException.class, () -> {
+            funcion.obtenerSala("20:00");
+        });
+        assertEquals("Horario no valido para la funcion seleccionada", exception.getMessage());
     }
 
     @Test
-    void testObtenerHorarioError2() {
-        funcion = new Funcion("Pelicula", "25:00", new Sala(1, 100));
-        assertThrows(IllegalArgumentException.class, () -> funcion.getHorario());
+    void testLiberarAsientos() throws CinemaException {
+        funcion.agregarHorario("18:00", sala);
+        List<Reserva> reservas = new ArrayList<>();
+        reservas.add(new Reserva(2, 3));
+        funcion.liberarAsientos("18:00", reservas);
+        assertFalse(sala.estaOcupado(1, 2)); // Verificar que el asiento fue liberado
+    }
+
+    @Test
+    void testLiberarAsientosHorarioInvalido() {
+        List<Reserva> reservas = new ArrayList<>();
+        reservas.add(new Reserva(2, 3));
+        CinemaException exception = assertThrows(CinemaException.class, () -> {
+            funcion.liberarAsientos("20:00", reservas);
+        });
+        assertEquals("Horario no valido para la funcion seleccionada", exception.getMessage());
     }
 }
