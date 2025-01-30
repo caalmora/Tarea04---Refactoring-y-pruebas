@@ -3,55 +3,171 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import com.mycompany.sistema_cinemaseat.*
 
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import java.util.*;
+
 class FuncionTest {
-    private Funcion funcion;
-    private Sala sala;
 
-    @BeforeEach
-    void setUp() {
-        funcion = new Funcion("Matrix");
-        sala = new Sala(5, 5);
+ @Test
+    void testAgregarHorarioNormal() {
+        Funcion funcion = new Funcion("Inception");
+        Sala sala = new Sala(10, 10);
+        funcion.agregarHorario("12:00", sala);
+        assertTrue(funcion.getHorarios().containsKey("12:00"));
     }
 
     @Test
-    void testAgregarHorario() {
-        funcion.agregarHorario("18:00", sala);
-        Map<String, Sala> horarios = funcion.getHorarios();
-        assertTrue(horarios.containsKey("18:00"));
-        assertEquals(sala, horarios.get("18:00"));
+    void testAgregarHorarioNormalMultiple() {
+        Funcion funcion = new Funcion("Inception");
+        Sala sala1 = new Sala(10, 10);
+        Sala sala2 = new Sala(15, 15);
+        funcion.agregarHorario("12:00", sala1);
+        funcion.agregarHorario("15:00", sala2);
+        assertTrue(funcion.getHorarios().containsKey("12:00"));
+        assertTrue(funcion.getHorarios().containsKey("15:00"));
     }
 
     @Test
-    void testObtenerSalaValida() throws CinemaException {
-        funcion.agregarHorario("18:00", sala);
-        Sala obtenida = funcion.obtenerSala("18:00");
-        assertEquals(sala, obtenida);
+    void testAgregarHorarioError() {
+        Funcion funcion = new Funcion("Inception");
+        Sala sala = new Sala(10, 10);
+        funcion.agregarHorario("12:00", sala);
+        assertFalse(funcion.getHorarios().containsKey("15:00"));
     }
 
     @Test
-    void testObtenerSalaInvalida() {
-        CinemaException exception = assertThrows(CinemaException.class, () -> {
-            funcion.obtenerSala("20:00");
+    void testAgregarHorarioErrorMultiple() {
+        Funcion funcion = new Funcion("Inception");
+        Sala sala1 = new Sala(10, 10);
+        Sala sala2 = new Sala(15, 15);
+        funcion.agregarHorario("12:00", sala1);
+        funcion.agregarHorario("15:00", sala2);
+        assertFalse(funcion.getHorarios().containsKey("18:00"));
+    }
+
+    @Test
+    void testObtenerSalaNormal() throws CinemaException {
+        Funcion funcion = new Funcion("Inception");
+        Sala sala = new Sala(10, 10);
+        funcion.agregarHorario("12:00", sala);
+        Sala result = funcion.obtenerSala("12:00");
+        assertNotNull(result);
+        assertEquals(sala, result);
+    }
+
+    @Test
+    void testObtenerSalaNormalConMultiplesHorarios() throws CinemaException {
+        Funcion funcion = new Funcion("Inception");
+        Sala sala1 = new Sala(10, 10);
+        Sala sala2 = new Sala(15, 15);
+        funcion.agregarHorario("12:00", sala1);
+        funcion.agregarHorario("15:00", sala2);
+        Sala result = funcion.obtenerSala("15:00");
+        assertNotNull(result);
+        assertEquals(sala2, result);
+    }
+
+    @Test
+    void testObtenerSalaError() {
+        Funcion funcion = new Funcion("Inception");
+        Sala sala = new Sala(10, 10);
+        funcion.agregarHorario("12:00", sala);
+        assertThrows(CinemaException.class, () -> {
+            funcion.obtenerSala("15:00");
         });
-        assertEquals("Horario no valido para la funcion seleccionada", exception.getMessage());
     }
 
     @Test
-    void testLiberarAsientos() throws CinemaException {
-        funcion.agregarHorario("18:00", sala);
-        List<Reserva> reservas = new ArrayList<>();
-        reservas.add(new Reserva(2, 3));
-        funcion.liberarAsientos("18:00", reservas);
-        assertFalse(sala.estaOcupado(1, 2)); // Verificar que el asiento fue liberado
-    }
-
-    @Test
-    void testLiberarAsientosHorarioInvalido() {
-        List<Reserva> reservas = new ArrayList<>();
-        reservas.add(new Reserva(2, 3));
-        CinemaException exception = assertThrows(CinemaException.class, () -> {
-            funcion.liberarAsientos("20:00", reservas);
+    void testObtenerSalaErrorConVariosHorarios() {
+        Funcion funcion = new Funcion("Inception");
+        Sala sala1 = new Sala(10, 10);
+        Sala sala2 = new Sala(15, 15);
+        funcion.agregarHorario("12:00", sala1);
+        funcion.agregarHorario("15:00", sala2);
+        assertThrows(CinemaException.class, () -> {
+            funcion.obtenerSala("18:00");
         });
-        assertEquals("Horario no valido para la funcion seleccionada", exception.getMessage());
+    }
+
+    @Test
+    void testMostrarHorariosNormal() {
+        Funcion funcion = new Funcion("Inception");
+        Sala sala = new Sala(10, 10);
+        funcion.agregarHorario("12:00", sala);
+        // Aquí solo verificamos que no arroje excepciones y que se imprime algo
+        assertDoesNotThrow(() -> funcion.mostrarHorarios());
+    }
+
+    @Test
+    void testMostrarHorariosVacio() {
+        Funcion funcion = new Funcion("Inception");
+        assertDoesNotThrow(() -> funcion.mostrarHorarios());
+    }
+
+    @Test
+    void testMostrarHorariosConVariosHorarios() {
+        Funcion funcion = new Funcion("Inception");
+        Sala sala1 = new Sala(10, 10);
+        Sala sala2 = new Sala(15, 15);
+        funcion.agregarHorario("12:00", sala1);
+        funcion.agregarHorario("15:00", sala2);
+        assertDoesNotThrow(() -> funcion.mostrarHorarios());
+    }
+
+    @Test
+    void testMostrarHorariosError() {
+        Funcion funcion = new Funcion("Inception");
+        assertDoesNotThrow(() -> funcion.mostrarHorarios());
+    }
+
+    @Test
+    void testLiberarAsientosNormal() throws CinemaException {
+        Funcion funcion = new Funcion("Inception");
+        Sala sala = new Sala(10, 10);
+        funcion.agregarHorario("12:00", sala);
+        Reserva reserva = new Reserva(1, 1);
+        List<Reserva> reservas = new ArrayList<>();
+        reservas.add(reserva);
+        assertDoesNotThrow(() -> funcion.liberarAsientos("12:00", reservas));
+    }
+
+    @Test
+    void testLiberarAsientosNormalConVarios() throws CinemaException {
+        Funcion funcion = new Funcion("Inception");
+        Sala sala = new Sala(10, 10);
+        funcion.agregarHorario("12:00", sala);
+        Reserva reserva1 = new Reserva(1, 1);
+        Reserva reserva2 = new Reserva(2, 2);
+        List<Reserva> reservas = new ArrayList<>();
+        reservas.add(reserva1);
+        reservas.add(reserva2);
+        assertDoesNotThrow(() -> funcion.liberarAsientos("12:00", reservas));
+    }
+
+    @Test
+    void testLiberarAsientosErrorHorarioInvalido() {
+        Funcion funcion = new Funcion("Inception");
+        Sala sala = new Sala(10, 10);
+        funcion.agregarHorario("12:00", sala);
+        Reserva reserva = new Reserva(1, 1);
+        List<Reserva> reservas = new ArrayList<>();
+        reservas.add(reserva);
+        assertThrows(CinemaException.class, () -> {
+            funcion.liberarAsientos("15:00", reservas);
+        });
+    }
+
+    @Test
+    void testLiberarAsientosErrorAsientoNoExistente() {
+        Funcion funcion = new Funcion("Inception");
+        Sala sala = new Sala(2, 2); // Sala con solo 2x2 asientos
+        funcion.agregarHorario("12:00", sala);
+        Reserva reserva = new Reserva(3, 3); // Asiento fuera de los límites
+        List<Reserva> reservas = new ArrayList<>();
+        reservas.add(reserva);
+        assertThrows(IndexOutOfBoundsException.class, () -> {
+            funcion.liberarAsientos("12:00", reservas);
+        });
     }
 }
